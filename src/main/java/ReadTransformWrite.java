@@ -1,3 +1,8 @@
+import netscape.javascript.JSObject;
+import org.json.JSONObject;
+import org.json.XML;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,8 +29,29 @@ public class ReadTransformWrite {
      */
 
     public static void main(String[] args) {
-        readAndTrandformAndWrite();
+        //readAndTrandformAndWrite();
+        System.out.println(convertXMLlToJson().toString(3));
+
     }
+
+
+    public static JSONObject convertXMLlToJson() {
+        Path filePath = Paths.get("sample.xml");
+        StringBuilder sb = new StringBuilder();
+        JSONObject jn;
+
+        try (BufferedReader br = Files.newBufferedReader(filePath)) {
+            String str;
+            while ((str = br.readLine()) != null) {
+                sb.append(str);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        jn = XML.toJSONObject(sb.toString());
+        return jn;
+    }
+
 
     public static void readAndTrandformAndWrite() {
         Path filepath = Paths.get("sample.xml");
@@ -39,6 +65,4 @@ public class ReadTransformWrite {
         }
         System.out.println(linesRead.toString());
     }
-
-
 }

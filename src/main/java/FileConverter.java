@@ -46,7 +46,7 @@ public class FileConverter {
         //Create the path
         Path writePath = Paths.get("sampleOutput.txt");
         //Create buffered writer
-        try (BufferedWriter writer = Files.newBufferedWriter(writePath);) {
+        try (BufferedWriter writer = Files.newBufferedWriter(writePath)) {
             writer.write("123");
             writer.write("\n456");
             writer.write("\n789");
