@@ -1,4 +1,4 @@
-import netscape.javascript.JSObject;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
 
@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ReadTransformWrite {
 
@@ -18,23 +18,32 @@ public class ReadTransformWrite {
     // - Create a JSON object at the author level.
     // - Sample provided below
     /*
-        {
+        [{
             "Author": "Corets, Eva",
             "Books": [
                 ["BookID", "Title", "Genre", "Price", "PublishDate"],
                 ["bk103", "Maeve Ascendant", "Fantasy", 5.95, "2000-11-17"],
                 ["bk104", "Oberon's Legacy", "Fantasy", 5.95, "2001 - 03 - 10"]
             ]
-        }
+        },
+        {
+          "Author": "Gambardella, Matthew",
+          "Books": [
+            ["BookID", "Title", "Genre", "Price", "PublishDate"],
+            ["bk101", "XML Developer's Guide", "Computer", 44.95, "2000-10-01"]
+          ]
+        }]
      */
 
     public static void main(String[] args) {
-        //readAndTrandformAndWrite();
-        System.out.println(convertXMLlToJson().toString(3));
+//        System.out.println(convertXMLlToJson().getJSONObject("catalog").optJSONArray("book").toString(3));
+//        JSONArray testArr = convertXMLlToJson().getJSONObjectct("catalog").optJSONArray("book");
+//        System.out.println(testArr.toString(3));
+        System.out.println(reConstructJson().toString(3));
 
     }
 
-
+    //method to convert the input xml file to json object
     public static JSONObject convertXMLlToJson() {
         Path filePath = Paths.get("sample.xml");
         StringBuilder sb = new StringBuilder();
@@ -52,17 +61,25 @@ public class ReadTransformWrite {
         return jn;
     }
 
+    //method  to reconstruct the required json object
+    public static JSONArray reConstructJson() {
+        JSONArray finalArr = new JSONArray();
+        List<String> headers = Arrays.asList("BookID", "Title", "Genre", "Price", "PublishDate");
+        JSONArray books = convertXMLlToJson().getJSONObject("catalog").optJSONArray("book");
 
-    public static void readAndTrandformAndWrite() {
-        Path filepath = Paths.get("sample.xml");
-        List<String> linesRead = null;
-        try {
-            linesRead = Files.lines(filepath)
-                    .filter(x -> x.contains("author"))
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (int i = 0; i < books.length(); i++) {
+            JSONObject authorBooks = new JSONObject();
+            authorBooks.put("Author", books.getJSONObject(i).getString("author"));
+            authorBooks.put("Books", new JSONArray()
+                    .put(headers)
+                    .put(books.getJSONObject(i).getString("id"))
+                    .put(books.getJSONObject((i)).getString("title"))
+                    .put(books.getJSONObject(i).getString("genre"))
+                    .put(books.getJSONObject(i).getDouble("price"))
+                    .put(books.getJSONObject(i).getString("publish_date"))
+            );
+            finalArr.put(authorBooks);
         }
-        System.out.println(linesRead.toString());
+        return finalArr;
     }
 }
