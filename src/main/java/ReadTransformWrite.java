@@ -7,8 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ReadTransformWrite {
 
@@ -36,11 +35,7 @@ public class ReadTransformWrite {
      */
 
     public static void main(String[] args) {
-//        System.out.println(convertXMLlToJson().getJSONObject("catalog").optJSONArray("book").toString(3));
-//        JSONArray testArr = convertXMLlToJson().getJSONObjectct("catalog").optJSONArray("book");
-//        System.out.println(testArr.toString(3));
-        System.out.println(reConstructJson().toString(3));
-
+        System.out.println(reConstructJson().toString());
     }
 
     //method to convert the input xml file to json object
@@ -63,22 +58,43 @@ public class ReadTransformWrite {
 
     //method  to reconstruct the required json object
     public static JSONArray reConstructJson() {
-        JSONArray finalArr = new JSONArray();
+        JSONArray finalArr = new JSONArray(); // this is the final jsonarray that will be returned
         List<String> headers = Arrays.asList("BookID", "Title", "Genre", "Price", "PublishDate");
         JSONArray books = convertXMLlToJson().getJSONObject("catalog").optJSONArray("book");
+        //authorTracker is the map to keep track of authors who've been encountered
+        //the values of this map is the actual object that we need
+        Map<String, JSONObject> authorTracker = new HashMap<>();
 
         for (int i = 0; i < books.length(); i++) {
-            JSONObject authorBooks = new JSONObject();
-            authorBooks.put("Author", books.getJSONObject(i).getString("author"));
-            authorBooks.put("Books", new JSONArray()
-                    .put(headers)
-                    .put(books.getJSONObject(i).getString("id"))
-                    .put(books.getJSONObject((i)).getString("title"))
-                    .put(books.getJSONObject(i).getString("genre"))
-                    .put(books.getJSONObject(i).getDouble("price"))
-                    .put(books.getJSONObject(i).getString("publish_date"))
-            );
-            finalArr.put(authorBooks);
+            String authorName = books.getJSONObject(i).getString("author");
+
+            if (!authorTracker.containsKey(authorName)) {
+                JSONObject authorBooks = new JSONObject();
+
+                authorBooks.put("Author", books.getJSONObject(i).getString("author"));
+                authorBooks.put("Books", new ArrayList<>(Arrays.asList((headers), Arrays.asList(
+                        books.getJSONObject(i).getString("id"),
+                        books.getJSONObject(i).getString("title"),
+                        books.getJSONObject(i).getString("genre"),
+                        books.getJSONObject(i).getDouble("price"),
+                        books.getJSONObject(i).getString("publish_date")
+                ))));
+                authorTracker.put(authorName, authorBooks);
+
+            } else if (authorTracker.containsKey(authorName)) {
+                authorTracker.get(authorName).getJSONArray("Books").put(
+                        Arrays.asList(
+                                books.getJSONObject(i).getString("id"),
+                                books.getJSONObject(i).getString("title"),
+                                books.getJSONObject(i).getString("genre"),
+                                books.getJSONObject(i).getDouble("price"),
+                                books.getJSONObject(i).getString("publish_date")
+                        ));
+            }
+        }
+        //finally iterate over the authorTracker map, pick the values and add to finalArray
+        for (Map.Entry<String, JSONObject> entry: authorTracker.entrySet()) {
+            finalArr.put(entry.getValue());
         }
         return finalArr;
     }
