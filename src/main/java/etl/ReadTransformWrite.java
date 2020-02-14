@@ -1,3 +1,5 @@
+package etl;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
@@ -12,7 +14,7 @@ import java.util.*;
 public class ReadTransformWrite {
 
     //Tasks
-    // - Read the file
+    // - Read the file, sample.xml
     // - Extract the names of all the Authors and books
     // - Create a JSON object at the author level.
     // - Sample provided below
@@ -35,7 +37,8 @@ public class ReadTransformWrite {
      */
 
     public static void main(String[] args) {
-        System.out.println(reConstructJson().toString());
+        //for testing, uncomment the following to see output in console
+        System.out.println(reConstructJson().toString(3));
     }
 
     //method to convert the input xml file to json object

@@ -1,3 +1,5 @@
+package etl;
+
 import org.json.JSONObject;
 
 import java.io.*;
@@ -10,13 +12,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class FileConverter {
+public class TestProgram {
 
     public static void main(String[] args) {
 //        String output = FileConverter.readAndPrintFile().toString();
 //        System.out.println(output);
 //        FileConverter.readLineJava8();
-        FileConverter.writeLineJava8();
+        TestProgram.writeLineJava8();
     }
 
     private static Map<String, String> lineMap = new HashMap<>();
