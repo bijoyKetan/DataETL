@@ -38,7 +38,7 @@ public class ReadTransformWrite {
 
     public static void main(String[] args) {
         //for testing, uncomment the following to see output in console
-        System.out.println(reConstructJson().toString(3));
+        System.out.println(getAuthorBooks().toString(3));
     }
 
     //method to convert the input xml file to json object
@@ -60,7 +60,7 @@ public class ReadTransformWrite {
     }
 
     //method  to reconstruct the required json object
-    public static JSONArray reConstructJson() {
+    public static JSONArray getAuthorBooks() {
         JSONArray finalArr = new JSONArray(); // this is the final jsonarray that will be returned
         List<String> headers = Arrays.asList("BookID", "Title", "Genre", "Price", "PublishDate");
         JSONArray books = convertXMLlToJson().getJSONObject("catalog").optJSONArray("book");
