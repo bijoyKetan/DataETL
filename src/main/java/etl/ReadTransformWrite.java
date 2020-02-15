@@ -3,7 +3,6 @@ package etl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
-import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,10 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static org.junit.Assert.assertThat;
 
 public class ReadTransformWrite {
 
@@ -84,7 +80,7 @@ public class ReadTransformWrite {
     }
 
     //For a given bookID, provide book details.
-    public static JSONArray getBookByID(String bookID) {
+    public static JSONArray getBooksByID(String bookID) {
         JSONArray allBooks = convertXMLlToJson()
                 .getJSONObject("catalog")
                 .getJSONArray("book");
@@ -102,7 +98,7 @@ public class ReadTransformWrite {
     }
 
     public static void main(String[] args) {
-        System.out.println(getBookByID("bk102").toString(3));
+        System.out.println(getBooksByID("bk101").toString(3));
     }
 
 }

@@ -13,7 +13,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public String getBookByID() {
-        return null;
+    public String getBookByID(String bookID) {
+        return ReadTransformWrite.getBooksByID(bookID).toString();
     }
 }

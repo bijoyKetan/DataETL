@@ -3,5 +3,5 @@ package service.service;
 public interface BookService {
 
     String getAllAuthorBooks();
-    String getBookByID();
+    String getBookByID(String bookID);
 }
