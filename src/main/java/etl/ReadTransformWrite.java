@@ -10,7 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ReadTransformWrite {
 
@@ -79,11 +80,16 @@ public class ReadTransformWrite {
         return finalArr;
     }
 
-    //For a given bookID, provide book details.
-    public static JSONArray getBooksByID(String bookID) {
-        JSONArray allBooks = convertXMLlToJson()
+    //a private helper method to get all yhe books in a JSON array
+    private static JSONArray getAllBooksinJSON() {
+        return convertXMLlToJson()
                 .getJSONObject("catalog")
                 .getJSONArray("book");
+    }
+
+    //For a given bookID, provide book details.
+    public static JSONArray getBooksByID(String bookID) {
+        JSONArray allBooks = getAllBooksinJSON();
         JSONArray outputBooks = new JSONArray();
 
         allBooks.forEach(x -> {
@@ -97,8 +103,40 @@ public class ReadTransformWrite {
         return outputBooks;
     }
 
+    //Get author details
+    //TODO - How to formulate functionas that can work with various number of argumnets? Passing a JSON object as parameter?
+    //TODO - Why can't I use regulat stream with JSONArray? I can's invoke the JSONObject.getString function; why is that?
+    public static List<Object> getAuthorGenre(String author) {
+        JSONArray books = getAllBooksinJSON();
+        return IntStream.range(0, books.length())
+                .filter(i -> books.getJSONObject(i).getString("author").equals(author))
+                .mapToObj(i -> books.get(i))
+                .collect(Collectors.toList());
+    }
+
+    //Overloaded getAuthordetails if caller wants to narrow down by both author and
+    public static List<Object> getAuthorGenre(Map<String,Object> inputs){
+        JSONArray books = getAllBooksinJSON();
+        if (inputs.containsKey("author") && inputs.containsKey("genre")) {
+            String inputAuthor = (String) inputs.get("author");
+            String inputGenre = (String) inputs.get("genre");
+            return IntStream.range(0, books.length())
+                    .filter(i -> books.getJSONObject(i).getString("author").equals(inputAuthor)
+                            && books.getJSONObject(i).getString("genre").equals(inputGenre))
+                    .mapToObj(i -> books.get(i))
+                    .collect(Collectors.toList());
+        } else return null;
+    }
+
     public static void main(String[] args) {
-        System.out.println(getBooksByID("bk101").toString(3));
+//        System.out.println(getAuthorDetails("Corets, Eva"));
+
+        Map<String, Object> testMap= new HashMap<>();
+        testMap.put("author", "Corets, Eva");
+        testMap.put("genre", "Fantasy");
+        System.out.println(getAuthorGenre(testMap));
+        //TODO What is the issue with this? Does not compile.
+//        System.out.println(getAuthorDetails(Map.of("author", "Corets, Eva", "genre", "Fantasy")));
     }
 
 }

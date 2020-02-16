@@ -22,7 +22,7 @@ public class BookAuthorController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/getAllAuthorBooks")
+    @GetMapping("/allAuthorBooks")
     public ResponseEntity getAllAuthorBooks() {
         try {
             logger.info("The getAllAuthorBoks method has been invoked");
@@ -34,7 +34,7 @@ public class BookAuthorController {
         }
     }
 
-    @GetMapping("/getBook")
+    @GetMapping("/book")
     public ResponseEntity getBookByID(@RequestParam String bookID) {
         try {
             return new ResponseEntity(bookService.getBookByID(bookID), HttpStatus.OK);
@@ -43,5 +43,12 @@ public class BookAuthorController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/author")
+    public ResponseEntity getAuthorDetails(@RequestParam String authorName,
+                                           @RequestParam String genre) {
+        return null;
+    }
+
 
 }

@@ -16,4 +16,9 @@ public class BookServiceImpl implements BookService {
     public String getBookByID(String bookID) {
         return ReadTransformWrite.getBooksByID(bookID).toString();
     }
+
+    @Override
+    public String getAuthorsBooks(String authorName) {
+        return null;
+    }
 }
