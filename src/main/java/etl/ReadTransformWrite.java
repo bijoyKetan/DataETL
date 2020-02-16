@@ -106,7 +106,7 @@ public class ReadTransformWrite {
     //Get author details
     //TODO - How to formulate functionas that can work with various number of argumnets? Passing a JSON object as parameter?
     //TODO - Why can't I use regulat stream with JSONArray? I can's invoke the JSONObject.getString function; why is that?
-    public static List<Object> getAuthorGenre(String author) {
+    public static List<Object> getAuthorDetails(String author) {
         JSONArray books = getAllBooksinJSON();
         return IntStream.range(0, books.length())
                 .filter(i -> books.getJSONObject(i).getString("author").equals(author))
@@ -114,26 +114,38 @@ public class ReadTransformWrite {
                 .collect(Collectors.toList());
     }
 
-    //Overloaded getAuthordetails if caller wants to narrow down by both author and
-    public static List<Object> getAuthorGenre(Map<String,Object> inputs){
+    //method works with variable number of parameters, by author or by genre or both.
+    public static List<Object> getAuthorGenre(Map<String, Object> inputs) {
         JSONArray books = getAllBooksinJSON();
+        String inputAuthor = (String) inputs.get("author");
+        String inputGenre = (String) inputs.get("genre");
+
         if (inputs.containsKey("author") && inputs.containsKey("genre")) {
-            String inputAuthor = (String) inputs.get("author");
-            String inputGenre = (String) inputs.get("genre");
             return IntStream.range(0, books.length())
                     .filter(i -> books.getJSONObject(i).getString("author").equals(inputAuthor)
                             && books.getJSONObject(i).getString("genre").equals(inputGenre))
                     .mapToObj(i -> books.get(i))
                     .collect(Collectors.toList());
-        } else return null;
+        } else if (inputs.containsKey("author") && !inputs.containsKey("genre")) {
+            return IntStream.range(0, books.length())
+                    .filter(i -> books.getJSONObject(i).getString("author").equals(inputAuthor))
+                    .mapToObj(i -> books.get(i))
+                    .collect(Collectors.toList());
+        } else if (inputs.containsKey("genre") && !inputs.containsKey("author")) {
+            return IntStream.range(0, books.length())
+                    .filter(i -> books.getJSONObject(i).getString("genre").equals(inputGenre))
+                    .mapToObj(i -> books.get(i))
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 
+    //For testing purposes.
     public static void main(String[] args) {
 //        System.out.println(getAuthorDetails("Corets, Eva"));
-
-        Map<String, Object> testMap= new HashMap<>();
-        testMap.put("author", "Corets, Eva");
-        testMap.put("genre", "Fantasy");
+        Map<String, Object> testMap = new HashMap<>();
+//        testMap.put("author", "Corets, Eva");
+//        testMap.put("genre", "Romance");
         System.out.println(getAuthorGenre(testMap));
         //TODO What is the issue with this? Does not compile.
 //        System.out.println(getAuthorDetails(Map.of("author", "Corets, Eva", "genre", "Fantasy")));
