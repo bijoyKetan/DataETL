@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import service.service.BookService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -44,11 +44,16 @@ public class BookAuthorController {
         }
     }
 
-    @GetMapping("/author")
-    public ResponseEntity getAuthorDetails(@RequestParam String authorName,
-                                           @RequestParam String genre) {
-        return null;
+    @PostMapping("/author")
+    //TODO - tried with just (Required = False) and received nullpointer exception. Why?
+    public ResponseEntity getAuthorDetails(@RequestParam(defaultValue = "null") String authorName,
+                                           @RequestParam(defaultValue = "null") String genre) {
+        try {
+            return new ResponseEntity<>(bookService.getAuthorGenre(authorName, genre), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-
 
 }

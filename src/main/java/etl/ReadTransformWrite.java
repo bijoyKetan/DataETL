@@ -115,10 +115,10 @@ public class ReadTransformWrite {
     }
 
     //method works with variable number of parameters, by author or by genre or both.
-    public static List<Object> getAuthorGenre(Map<String, Object> inputs) {
+    public static List<Object> getAuthorGenre(Map<String, String> inputs) {
         JSONArray books = getAllBooksinJSON();
-        String inputAuthor = (String) inputs.get("author");
-        String inputGenre = (String) inputs.get("genre");
+        String inputAuthor = inputs.get("author");
+        String inputGenre = inputs.get("genre");
 
         if (inputs.containsKey("author") && inputs.containsKey("genre")) {
             return IntStream.range(0, books.length())
@@ -143,7 +143,7 @@ public class ReadTransformWrite {
     //For testing purposes.
     public static void main(String[] args) {
 //        System.out.println(getAuthorDetails("Corets, Eva"));
-        Map<String, Object> testMap = new HashMap<>();
+        Map<String, String> testMap = new HashMap<>();
 //        testMap.put("author", "Corets, Eva");
 //        testMap.put("genre", "Romance");
         System.out.println(getAuthorGenre(testMap));
