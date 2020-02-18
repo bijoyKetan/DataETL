@@ -80,7 +80,7 @@ public class ReadTransformWrite {
         return finalArr;
     }
 
-    //a private helper method to get all yhe books in a JSON array
+    //a private helper method to get all the books in a JSON array
     private static JSONArray getAllBooksinJSON() {
         return convertXMLlToJson()
                 .getJSONObject("catalog")
@@ -141,14 +141,14 @@ public class ReadTransformWrite {
     }
 
     //For testing purposes.
-    public static void main(String[] args) {
+//    public static void main(String[] args) {
 //        System.out.println(getAuthorDetails("Corets, Eva"));
-        Map<String, String> testMap = new HashMap<>();
+//        Map<String, String> testMap = new HashMap<>();
 //        testMap.put("author", "Corets, Eva");
 //        testMap.put("genre", "Romance");
-        System.out.println(getAuthorGenre(testMap));
+//        System.out.println(getAuthorGenre(testMap));
         //TODO What is the issue with this? Does not compile.
 //        System.out.println(getAuthorDetails(Map.of("author", "Corets, Eva", "genre", "Fantasy")));
-    }
+//    }
 
 }

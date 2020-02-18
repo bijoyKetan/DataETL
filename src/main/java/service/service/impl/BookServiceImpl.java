@@ -1,13 +1,7 @@
 package service.service.impl;
 
 import etl.ReadTransformWrite;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import service.service.BookService;
 
 import java.util.HashMap;
@@ -26,10 +20,6 @@ public class BookServiceImpl implements BookService {
         return ReadTransformWrite.getBooksByID(bookID).toString();
     }
 
-    @Override
-    public String getAuthorDetails(String authorName) {
-        return null;
-    }
 
     @Override
     public String getAuthorGenre(String authorName, String genre) {
@@ -43,10 +33,14 @@ public class BookServiceImpl implements BookService {
         //TODO - What is the issue with the following piece of code?
 //        RestTemplate restTemplate = new RestTemplate();
 //        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Accepts", MediaType.APPLICATION_JSON_VALUE);
+//        headers.add("Accepts", MediaType.APPLICATION_JSON_VALUE);
 //        HttpEntity<?> request = new HttpEntity<>(inputParams, headers);
-//        HttpEntity<String> response = restTemplate.exchange("http://localhost:9090/api/v1/author", HttpMethod.POST, request, new ParameterizedTypeReference<String>() {
-//        });
+//        ResponseEntity<String> response = restTemplate.exchange(
+//                "http://localhost:9090/api/v1/author",
+//                HttpMethod.POST,
+//                request,
+//                String.class
+//              );
 //        String result = response.getBody();
 //        return result;
     }
