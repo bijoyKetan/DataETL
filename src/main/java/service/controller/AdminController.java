@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
     @GetMapping("version")
-    public ResponseEntity<String> getVersion() {
+    public static ResponseEntity<String> getVersion() {
         return new ResponseEntity<>("0.0.1", HttpStatus.OK);
     }
 }
