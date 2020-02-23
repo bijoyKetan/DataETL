@@ -12,6 +12,6 @@ public class AdminController {
 
     @GetMapping("version")
     public ResponseEntity<String> getVersion() {
-        return new ResponseEntity<>("0.0.1", HttpStatus.OK);
+        return new ResponseEntity<>("1.0.0", HttpStatus.OK);
     }
 }

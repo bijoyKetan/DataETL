@@ -14,12 +14,12 @@ import java.util.stream.Stream;
 
 public class TestProgram {
 
-    public static void main(String[] args) {
-//        String output = FileConverter.readAndPrintFile().toString();
-//        System.out.println(output);
-//        FileConverter.readLineJava8();
-        TestProgram.writeLineJava8();
-    }
+//    public static void main(String[] args) {
+////        String output = FileConverter.readAndPrintFile().toString();
+////        System.out.println(output);
+////        FileConverter.readLineJava8();
+//        TestProgram.writeLineJava8();
+//    }
 
     private static Map<String, String> lineMap = new HashMap<>();
     private static List<String> lineList = new ArrayList<>();

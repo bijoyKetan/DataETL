@@ -6,9 +6,9 @@ import org.json.XML;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -16,15 +16,19 @@ import java.util.stream.IntStream;
 public class ReadTransformWrite {
 
     private static JSONArray finalArr;
-    private static final String filePath = "sample.xml";
     private static JSONObject xmlToJsonObj;
+    private static URL XML_URL = null;
 
-    //method to convert the input xml file to json object
-    public static JSONObject convertXMLlToJson() {
-        Path filePath = Paths.get(ReadTransformWrite.filePath);
+    //method to convert the input xml file from URL to json object
+    public static JSONObject convertXMLlToJson()  {
+        try {
+            XML_URL = new URL("https://raw.githubusercontent.com/bijoyKetan/DataETL/master/sample.xml");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
         StringBuilder sb = new StringBuilder();
-
-        try (BufferedReader br = Files.newBufferedReader(filePath)) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(XML_URL.openStream()))) {
             String str;
             while ((str = br.readLine()) != null) {
                 sb.append(str);
